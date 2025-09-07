@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice - Optimist Dental Clinic</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 20px; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: 20px auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-top: 5px solid #007bff; }
+        h1, h2 { color: #0056b3; text-align: center; }
+        .header, .footer { text-align: center; margin-bottom: 20px; color: #555; }
+        .details-section { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .details-section p { margin: 5px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; color: #333; }
+        .note { font-size: 0.85em; color: #666; margin-top: 15px; padding: 10px; background-color: #f9f9f9; border-left: 3px solid #007bff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Official Invoice</h1>
+            <p><strong>Optimist Dental Clinic</strong></p>
+            <p>Popoola bustop, 147/149 Ekoro Rd, opposite rovers Hotel, Abule Egba, Lagos 102213, Lagos</p>
+            <hr>
+        </div>
+
+        <div class="details-section">
+            <h2>Invoice Details</h2>
+            <p><strong>Invoice Number:</strong> {{invoiceNumber}}</p>
+            <p><strong>Date:</strong> {{invoiceDate}}</p>
+            <p><strong>Patient Name:</strong> {{patientName}}</p>
+            {{#if isHmoCovered}}
+            <p><strong>HMO Provider:</strong> {{hmoName}}</p>
+            {{/if}}
+        </div>
+
+        <div class="details-section">
+            <h2>Services Provided</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        {{#unless isHmoCovered}}
+                        <th>Amount (₦)</th>
+                        {{/unless}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each services}}
+                    <tr>
+                        <td>{{this.name}}</td>
+                        {{#unless ../isHmoCovered}}
+                        <td>{{this.totalPrice}}</td>
+                        {{/unless}}
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+
+        {{#unless isHmoCovered}}
+        <div class="details-section">
+            <h2>Payment Summary</h2>
+            <p><strong>Subtotal:</strong> ₦{{subtotal}}</p>
+            <p style="font-size: 1.2em; font-weight: bold; color: #007bff;">
+                <strong>Total Amount Due from Patient:</strong> ₦{{totalDue}}
+            </p>
+        </div>
+        {{/unless}}
+
+        {{#if latestDentalRecord}}
+        <div class="note">
+            <h3>Related Treatment Context:</h3>
+            <p><strong>Provisional Diagnosis:</strong> {{latestDentalRecord.provisionalDiagnosis}}</p>
+            <p><strong>Treatment Plan:</strong> {{latestDentalRecord.treatmentPlan}}</p>
+        </div>
+        {{/if}}
+
+        <div class="footer">
+            <p>Thank you for choosing Optimist Dental Clinic!</p>
+        </div>
+    </div>
+</body>
+</html>
